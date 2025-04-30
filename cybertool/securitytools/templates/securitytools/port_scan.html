@@ -1,0 +1,120 @@
+{% extends 'securitytools/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg animate__animated animate__fadeIn">
+                <div class="card-header gradient-bg text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-ethernet display-5 me-3"></i>
+                        <div>
+                            <h2 class="h1 mb-0">Port Scanner</h2>
+                            <p class="mb-0 opacity-75">Discover open ports on target systems</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.target|as_crispy_field }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form.scan_type|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form.ports|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-search me-2"></i>Scan Ports
+                        </button>
+                    </form>
+                    
+                    {% if port_results %}
+                    <div class="mt-5 animate__animated animate__fadeInUp">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0 d-flex align-items-center">
+                                    <i class="bi bi-clipboard-data me-2"></i>
+                                    Scan Results for {{ target }}
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Port</th>
+                                                <th>Status</th>
+                                                <th>Service</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for result in port_results %}
+                                            <tr>
+                                                <td>{{ result.port }}</td>
+                                                <td><span class="badge bg-success">Open</span></td>
+                                                <td>{{ result.service }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="3" class="text-center">No open ports found</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="alert alert-secondary mt-3">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    Scan completed at {% now "H:i:s" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="bi bi-info-circle-fill text-primary me-2"></i>About Port Scanning</h5>
+                    <p>
+                        Port scanning is a method for determining which ports on a network are open and could be receiving 
+                        or sending data. It is also used for testing network security and the strength of the system's firewall.
+                    </p>
+                    <p class="mb-0">
+                        <strong>Note:</strong> Only scan systems you own or have permission to scan. Unauthorized scanning may violate laws.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    // Show/hide custom ports field based on scan type selection
+    document.addEventListener('DOMContentLoaded', function() {
+        const scanType = document.getElementById('id_scan_type');
+        const portsGroup = document.getElementById('div_id_ports').parentElement;
+        
+        function togglePortsField() {
+            if (scanType.value === 'custom') {
+                portsGroup.style.display = 'block';
+            } else {
+                portsGroup.style.display = 'none';
+            }
+        }
+        
+        scanType.addEventListener('change', togglePortsField);
+        togglePortsField(); // Initialize
+    });
+</script>
+{% endblock %}
+{% endblock %}

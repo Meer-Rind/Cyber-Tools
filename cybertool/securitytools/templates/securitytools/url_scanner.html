@@ -1,0 +1,139 @@
+{% extends 'securitytools/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg animate__animated animate__fadeIn">
+                <div class="card-header gradient-bg text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-link-45deg display-5 me-3"></i>
+                        <div>
+                            <h2 class="h1 mb-0">URL Scanner</h2>
+                            <p class="mb-0 opacity-75">Analyze websites for potential vulnerabilities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.url|as_crispy_field }}
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Include http:// or https://
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-search me-2"></i>Scan URL
+                        </button>
+                    </form>
+                    
+                    {% if result %}
+                    <div class="mt-5 animate__animated animate__fadeInUp">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0 d-flex align-items-center">
+                                    <i class="bi bi-clipboard-data me-2"></i>
+                                    Scan Results for {{ form.url.value }}
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="resultsAccordion">
+                                    <div class="accordion-item border-0">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#statusCollapse">
+                                                <i class="bi bi-check-circle me-2"></i>Connection Status
+                                            </button>
+                                        </h2>
+                                        <div id="statusCollapse" class="accordion-collapse collapse show" data-bs-parent="#resultsAccordion">
+                                            <div class="accordion-body">
+                                                <span class="badge bg-{% if 'unreachable' in result.status %}danger{% else %}success{% endif %}">
+                                                    {{ result.status }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="accordion-item border-0 mt-2">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#vulnCollapse">
+                                                <i class="bi bi-bug me-2"></i>Potential Vulnerabilities
+                                            </button>
+                                        </h2>
+                                        <div id="vulnCollapse" class="accordion-collapse collapse" data-bs-parent="#resultsAccordion">
+                                            <div class="accordion-body">
+                                                {% if result.vulnerabilities %}
+                                                <ul class="list-group">
+                                                    {% for vuln in result.vulnerabilities %}
+                                                    <li class="list-group-item d-flex align-items-center">
+                                                        <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+                                                        {{ vuln }}
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                {% else %}
+                                                <div class="alert alert-success mb-0">
+                                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                                    No obvious vulnerabilities detected
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="accordion-item border-0 mt-2">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#headersCollapse">
+                                                <i class="bi bi-list-ul me-2"></i>Response Headers
+                                            </button>
+                                        </h2>
+                                        <div id="headersCollapse" class="accordion-collapse collapse" data-bs-parent="#resultsAccordion">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <tbody>
+                                                            {% for key, value in result.headers.items %}
+                                                            <tr>
+                                                                <th class="text-nowrap">{{ key }}</th>
+                                                                <td>{{ value }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-secondary mt-3">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    Scan completed at {% now "H:i:s" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-3"><i class="bi bi-info-circle-fill text-primary me-2"></i>About URL Scanning</h5>
+                    <p>
+                        URL scanning checks websites for common security vulnerabilities like SQL injection, 
+                        cross-site scripting (XSS), and insecure server configurations. It also analyzes 
+                        HTTP headers for security best practices.
+                    </p>
+                    <p class="mb-0">
+                        <strong>Note:</strong> This is a basic scan. For comprehensive security testing, 
+                        consider professional penetration testing services.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
