@@ -124,12 +124,13 @@ python manage.py runserver
 
 ## 📸 Screenshots
 
-![Screenshot 1](https://github.com/user-attachments/assets/5b355af6-8928-44fb-8760-cae9c801b001)
-![Screenshot 2](https://github.com/user-attachments/assets/a0588179-31f3-4431-a652-fdba21456283)
-![Screenshot 3](https://github.com/user-attachments/assets/cfec699a-0189-434c-9340-1baae60688a4)
-![Screenshot 4](https://github.com/user-attachments/assets/2803f3d7-d59c-4de7-b07d-c4a6d806a682)
-![Screenshot 5](https://github.com/user-attachments/assets/c59cc423-c594-4593-9ffe-5dc3d659bf88)
-![Screenshot 6](https://github.com/user-attachments/assets/82a88b87-047b-4ce1-9b6e-615ecb1aa255)
+<img width="956" alt="pr1" src="https://github.com/user-attachments/assets/7f66367b-13d8-4b1b-9338-28400d6279a3" />
+<img width="959" alt="pr2" src="https://github.com/user-attachments/assets/8dcad54b-4be0-4dd9-9053-fe78532db5c1" />
+<img width="945" alt="pr3" src="https://github.com/user-attachments/assets/b5cbe355-a459-46e0-a95b-3aeb05ac43a8" />
+<img width="874" alt="pr4" src="https://github.com/user-attachments/assets/934f996e-6f66-4272-b23c-82da63799beb" />
+<img width="839" alt="pr6" src="https://github.com/user-attachments/assets/f01b21a0-05ab-42a3-be87-3dcafcc65e1d" />
+<img width="786" alt="pr9" src="https://github.com/user-attachments/assets/46febb69-7bdb-4857-ba24-69f2a5ffb18e" />
+
 
 ---
 
