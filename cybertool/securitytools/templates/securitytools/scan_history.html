@@ -1,0 +1,109 @@
+{% extends 'securitytools/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg animate__animated animate__fadeIn">
+                <div class="card-header gradient-bg text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock-history display-5 me-3"></i>
+                        <div>
+                            <h2 class="h1 mb-0">Scan History</h2>
+                            <p class="mb-0 opacity-75">Your previous security scan results</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    {% if scans %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Scan Type</th>
+                                    <th>Target</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for scan in scans %}
+                                <tr>
+                                    <td class="text-nowrap">
+                                        <i class="bi bi-calendar-event me-2"></i>
+                                        {{ scan.timestamp|date:"Y-m-d" }}
+                                        <br>
+                                        <small class="text-muted">{{ scan.timestamp|date:"H:i" }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if scan.scan_type == 'Port Scan' %}bg-primary
+                                            {% elif scan.scan_type == 'URL Scan' %}bg-warning text-dark
+                                            {% elif scan.scan_type == 'Password Audit' %}bg-success
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ scan.scan_type }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <code>{{ scan.target|truncatechars:30 }}</code>
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary" 
+                                                data-bs-toggle="collapse" 
+                                                data-bs-target="#result{{ scan.id }}">
+                                            <i class="bi bi-eye me-1"></i>View
+                                        </button>
+                                        <a href="#" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="p-0 border-0">
+                                        <div id="result{{ scan.id }}" class="collapse">
+                                            <div class="p-3 bg-light border rounded">
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <h5 class="mb-0">Scan Details</h5>
+                                                    <small class="text-muted">ID: {{ scan.id }}</small>
+                                                </div>
+                                                <pre class="p-3 bg-white rounded">{{ scan.result }}</pre>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <nav aria-label="Scan history pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-folder-x display-4 text-muted mb-3"></i>
+                        <h3>No Scan History Found</h3>
+                        <p class="text-muted mb-4">
+                            Your scan results will appear here after you perform security scans
+                        </p>
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                            <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
