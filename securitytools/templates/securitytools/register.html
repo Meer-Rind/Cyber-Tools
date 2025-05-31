@@ -1,0 +1,116 @@
+{% extends 'securitytools/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto my-12 animate__animated animate__fadeIn">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
+        <div class="bg-gradient-to-r from-slate-900 to-slate-700 p-8 text-center">
+            <div class="flex items-center justify-center space-x-3">
+                <i class="bi bi-person-plus text-4xl text-emerald-400"></i>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Create Account</h2>
+                    <p class="text-slate-300">Join our security community</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-8">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="mb-6 p-4 bg-amber-100 text-amber-800 rounded-lg flex items-start animate__animated animate__shakeX">
+                        <i class="bi bi-exclamation-triangle-fill mr-2 mt-0.5"></i>
+                        <div>
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="mb-6">
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1 flex items-center">
+                        <i class="bi bi-person-fill mr-2 text-slate-500"></i>Username
+                    </label>
+                    <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" 
+                           class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all" 
+                           placeholder="Choose a username">
+                    {% if form.username.errors %}
+                        <div class="mt-1 text-sm text-amber-600 flex items-center">
+                            <i class="bi bi-exclamation-circle-fill mr-1"></i>
+                            {{ form.username.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-6">
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1 flex items-center">
+                        <i class="bi bi-envelope-fill mr-2 text-slate-500"></i>Email Address
+                    </label>
+                    <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" 
+                           class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all" 
+                           placeholder="your@email.com">
+                    {% if form.email.errors %}
+                        <div class="mt-1 text-sm text-amber-600 flex items-center">
+                            <i class="bi bi-exclamation-circle-fill mr-1"></i>
+                            {{ form.email.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-6">
+                    <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1 flex items-center">
+                        <i class="bi bi-lock-fill mr-2 text-slate-500"></i>Password
+                    </label>
+                    <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" 
+                           class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all" 
+                           placeholder="Create a password">
+                    {% if form.password1.errors %}
+                        <div class="mt-1 text-sm text-amber-600 flex items-center">
+                            <i class="bi bi-exclamation-circle-fill mr-1"></i>
+                            {{ form.password1.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-slate-500"><i class="bi bi-info-circle mr-1"></i> {{ form.password1.help_text }}</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1 flex items-center">
+                        <i class="bi bi-lock-fill mr-2 text-slate-500"></i>Confirm Password
+                    </label>
+                    <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" 
+                           class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all" 
+                           placeholder="Confirm your password">
+                    {% if form.password2.errors %}
+                        <div class="mt-1 text-sm text-amber-600 flex items-center">
+                            <i class="bi bi-exclamation-circle-fill mr-1"></i>
+                            {{ form.password2.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="termsCheck" name="termsCheck" type="checkbox" class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded" required>
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="termsCheck" class="text-slate-700">I agree to the <a href="#" class="text-emerald-600 hover:text-emerald-700">Terms of Service</a> and <a href="#" class="text-emerald-600 hover:text-emerald-700">Privacy Policy</a></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center">
+                    <i class="bi bi-person-plus mr-2"></i>Create Account
+                </button>
+                
+                <div class="mt-6 pt-6 border-t border-slate-200 text-center">
+                    <p class="text-sm text-slate-600">Already have an account? 
+                        <a href="{% url 'login' %}" class="font-medium text-emerald-600 hover:text-emerald-700">Sign in here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

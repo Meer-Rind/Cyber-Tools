@@ -1,0 +1,108 @@
+{% extends 'securitytools/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5 animate__animated animate__fadeIn">
+        <h1 class="display-4 fw-bold mb-3"><i class="bi bi-shield-lock text-accent"></i> CyberShield Pro</h1>
+        <p class="lead">Your comprehensive cybersecurity toolkit for testing and analysis</p>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4 animate__animated animate__fadeInUp animate__fast">
+            <div class="card h-100 tool-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-accent mb-3">
+                        <i class="bi bi-ethernet fs-1"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Port Scanner</h3>
+                    <p class="mb-4">Discover open ports and services on target systems</p>
+                    <a href="{% url 'port_scan' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Scan Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 animate__animated animate__fadeInUp animate__fast animate__delay-100ms">
+            <div class="card h-100 tool-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-accent mb-3">
+                        <i class="bi bi-key fs-1"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Password Audit</h3>
+                    <p class="mb-4">Test password strength against common attacks</p>
+                    <a href="{% url 'password_strength' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Test Password
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 animate__animated animate__fadeInUp animate__fast animate__delay-200ms">
+            <div class="card h-100 tool-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-accent mb-3">
+                        <i class="bi bi-hash fs-1"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Hash Generator</h3>
+                    <p class="mb-4">Generate cryptographic hashes using multiple algorithms</p>
+                    <a href="{% url 'hash_generator' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Generate Hash
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 animate__animated animate__fadeInUp animate__fast animate__delay-300ms">
+            <div class="card h-100 tool-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-accent mb-3">
+                        <i class="bi bi-link-45deg fs-1"></i>
+                    </div>
+                    <h3 class="h4 mb-3">URL Scanner</h3>
+                    <p class="mb-4">Analyze websites for potential vulnerabilities</p>
+                    <a href="{% url 'url_scanner' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Scan URL
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 animate__animated animate__fadeInUp animate__fast animate__delay-400ms">
+            <div class="card h-100 tool-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-accent mb-3">
+                        <i class="bi bi-clock-history fs-1"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Scan History</h3>
+                    <p class="mb-4">Review your previous scan results and reports</p>
+                    <a href="{% url 'scan_history' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i> View History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if not user.is_authenticated %}
+    <div class="row mt-5 animate__animated animate__fadeIn">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="card glass-effect">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-3">Ready to get started?</h2>
+                    <p class="mb-4">Sign up now to access all security tools and save your scan results</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'register' %}" class="btn btn-primary px-4">
+                            <i class="bi bi-person-plus me-1"></i> Create Account
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary px-4">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

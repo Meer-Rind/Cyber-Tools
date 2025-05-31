@@ -1,0 +1,60 @@
+{% extends "securitytools/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 mb-3 text-white"><i class="bi bi-journal-code text-accent"></i> Cybersecurity Education Center</h1>
+            <p class="lead text-neutral-200">Learn about the latest threats and how to protect yourself</p>
+        </div>
+    </div>
+
+    <!-- Featured Blogs -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4 text-white"><i class="bi bi-star-fill text-warning me-2"></i>Featured Articles</h2>
+            <div class="row g-4">
+                {% for blog in featured_blogs %}
+                <div class="col-md-4">
+                    <div class="card h-100 tool-card">
+                        {% if blog.thumbnail %}
+                        <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="{{ blog.title }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-white">{{ blog.title }}</h5>
+                            <p class="card-text text-neutral-200">{{ blog.content|truncatewords:30 }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Blogs -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-white"><i class="bi bi-clock-history text-accent me-2"></i>Recent Articles</h2>
+            <div class="card bg-primary-800">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for blog in recent_blogs %}
+                        <a href="{% url 'blog_detail' blog.slug %}" 
+                           class="list-group-item list-group-item-action bg-primary-800 border-bottom border-primary-700">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-white">{{ blog.title }}</h5>
+                                <small class="text-neutral-200">{{ blog.published_date|date:"M d, Y" }}</small>
+                            </div>
+                            <p class="mb-1 text-neutral-200">{{ blog.content|truncatewords:20 }}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

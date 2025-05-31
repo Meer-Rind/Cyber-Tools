@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CyberShield Pro - Advanced cybersecurity solutions for enterprise protection">
+    <meta name="keywords" content="cybersecurity, penetration testing, threat detection, vulnerability assessment">
+    <title>CyberShield Pro | Enterprise Security Solutions</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+    :root {
+        --primary-900: #0a192f;       /* Dark navy blue */
+        --primary-800: #172a45;       /* Slightly lighter navy */
+        --primary-700: #2a4365;       /* More contrast for cards */
+        --accent-500: #4fd1c5;        /* Softer teal for better visibility */
+        --accent-400: #81e6d9;        /* Lighter teal for hover states */
+        --neutral-100: #ffffff;       /* Pure white for best contrast */
+        --neutral-200: #e2e8f0;       /* Light gray for secondary text */
+        --neutral-700: #4a5568;       /* Dark gray for less important text */
+        --danger-500: #fc8181;        /* Softer red */
+        --warning-500: #f6ad55;        /* Softer orange */
+        --success-500: #68d391;        /* Softer green */
+        --info-500: #63b3ed;           /* Softer blue */
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--primary-900);
+        color: var(--neutral-100);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+    }
+    
+    code, pre, .mono {
+        font-family: 'JetBrains Mono', monospace;
+        background-color: rgba(23, 42, 69, 0.7);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        color: var(--accent-400);
+    }
+    
+    /* Navbar */
+    .navbar {
+        background-color: rgba(10, 25, 47, 0.95) !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(79, 209, 197, 0.2);
+        padding: 0.8rem 0;
+    }
+    
+    .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: var(--accent-500) !important;
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-brand span {
+        color: var(--neutral-100);
+    }
+    
+    .nav-link {
+        font-weight: 500;
+        color: var(--neutral-200) !important;
+        padding: 0.5rem 1rem !important;
+        margin: 0 0.2rem;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+        color: var(--accent-500) !important;
+    }
+    
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 1rem;
+        width: calc(100% - 2rem);
+        height: 2px;
+        background-color: var(--accent-500);
+    }
+    
+    /* Cards */
+    .card {
+        background-color: var(--primary-800);
+        border: 1px solid rgba(79, 209, 197, 0.15);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: var(--neutral-100);
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border-color: rgba(79, 209, 197, 0.3);
+    }
+    
+    .card-header {
+        background-color: rgba(23, 42, 69, 0.9);
+        border-bottom: 1px solid rgba(79, 209, 197, 0.15);
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        color: var(--neutral-100);
+    }
+    
+    /* Buttons */
+    .btn-primary {
+        background-color: var(--accent-500);
+        border-color: var(--accent-500);
+        color: var(--primary-900);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--accent-400);
+        border-color: var(--accent-400);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(79, 209, 197, 0.3);
+    }
+    
+    .btn-outline-primary {
+        border-color: var(--accent-500);
+        color: var(--accent-500);
+        background-color: transparent;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: var(--accent-500);
+        color: var(--primary-900);
+    }
+    
+    /* Alerts */
+    .alert {
+        border-radius: 8px;
+        border: none;
+        color: var(--neutral-100);
+    }
+    
+    .alert-primary {
+        background-color: rgba(79, 209, 197, 0.15);
+        color: var(--accent-500);
+        border-left: 4px solid var(--accent-500);
+    }
+    
+    .alert-success {
+        background-color: rgba(104, 211, 145, 0.15);
+        color: var(--success-500);
+        border-left: 4px solid var(--success-500);
+    }
+    
+    .alert-danger {
+        background-color: rgba(252, 129, 129, 0.15);
+        color: var(--danger-500);
+        border-left: 4px solid var(--danger-500);
+    }
+    
+    .alert-warning {
+        background-color: rgba(246, 173, 85, 0.15);
+        color: var(--warning-500);
+        border-left: 4px solid var(--warning-500);
+    }
+    
+    /* Forms */
+    .form-control, .form-select {
+        background-color: var(--primary-700);
+        border: 1px solid rgba(79, 209, 197, 0.2);
+        color: var(--neutral-100);
+        padding: 0.75rem 1rem;
+    }
+    
+    .form-control::placeholder {
+        color: var(--neutral-700);
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background-color: var(--primary-700);
+        color: var(--neutral-100);
+        border-color: var(--accent-500);
+        box-shadow: 0 0 0 0.25rem rgba(79, 209, 197, 0.25);
+    }
+    
+    .form-label {
+        color: var(--neutral-200);
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Tables */
+    .table {
+        color: var(--neutral-100);
+    }
+    
+    .table th {
+        background-color: var(--primary-700);
+        color: var(--neutral-100);
+        border-color: rgba(79, 209, 197, 0.2);
+    }
+    
+    .table td {
+        border-color: rgba(79, 209, 197, 0.1);
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(79, 209, 197, 0.08);
+    }
+    
+    /* Footer */
+    footer {
+        background-color: var(--primary-800);
+        margin-top: auto;
+        border-top: 1px solid rgba(79, 209, 197, 0.15);
+        color: var(--neutral-200);
+    }
+    
+    .footer-links a {
+        color: var(--neutral-200);
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .footer-links a:hover {
+        color: var(--accent-500);
+        transform: translateX(3px);
+    }
+    
+    .social-icon {
+        font-size: 1.25rem;
+        transition: all 0.3s;
+    }
+    
+    .social-icon:hover {
+        color: var(--accent-500);
+        transform: translateY(-2px);
+    }
+    
+    /* Animations */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Utility classes */
+    .text-accent {
+        color: var(--accent-500);
+    }
+    
+    .bg-dark-gradient {
+        background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
+    }
+    
+    .glass-effect {
+        background: rgba(23, 42, 69, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(79, 209, 197, 0.2);
+    }
+    
+    /* Tool cards */
+    .tool-card {
+        border-left: 4px solid var(--accent-500);
+        transition: all 0.3s ease;
+    }
+    
+    .tool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Terminal effect */
+    .terminal {
+        background-color: #011627;
+        border-radius: 8px;
+        padding: 1.5rem;
+        position: relative;
+        font-family: 'JetBrains Mono', monospace;
+        border: 1px solid rgba(79, 209, 197, 0.2);
+    }
+    
+    .terminal::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 12px;
+        height: 12px;
+        background-color: #ff5f56;
+        border-radius: 50%;
+        box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+    }
+    
+    .terminal-content {
+        margin-top: 1.5rem;
+        color: #d6deeb;
+        line-height: 1.5;
+    }
+    
+    .terminal-prompt {
+        color: var(--accent-500);
+    }
+    
+    /* Avatar in navbar */
+    .avatar {
+        background-color: var(--accent-500);
+        color: var(--primary-900);
+        font-weight: 600;
+    }
+    
+    /* Dropdown menu */
+    .dropdown-menu {
+        background-color: var(--primary-800);
+        border: 1px solid rgba(79, 209, 197, 0.2);
+    }
+    
+    .dropdown-item {
+        color: var(--neutral-200);
+    }
+    
+    .dropdown-item:hover {
+        background-color: rgba(79, 209, 197, 0.1);
+        color: var(--accent-500);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .navbar-brand {
+            font-size: 1.25rem;
+        }
+        
+        .nav-link {
+            padding: 0.5rem !important;
+            margin: 0;
+        }
+    }
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
+                <i class="bi bi-shield-shaded me-2"></i>CyberShield<span>Pro</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'port_scan' %}"><i class="bi bi-hdd-network me-1"></i>Port Scanner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'password_strength' %}"><i class="bi bi-key me-1"></i>Password Audit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'hash_generator' %}"><i class="bi bi-file-binary me-1"></i>Hash Generator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'url_scanner' %}"><i class="bi bi-link-45deg me-1"></i>URL Scanner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'education_home' %}"><i class="bi bi-journal-code me-1"></i>Education</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'phishing_detector' %}"><i class="bi bi-shield-exclamation me-1"></i>Phishing Detector</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
+                                <div class="avatar bg-accent text-primary-900 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
+                                    {{ user.username|first|upper }}
+                                </div>
+                                <span class="d-none d-lg-inline">{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end glass-effect">
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'scan_history' %}"><i class="bi bi-clock-history me-2"></i>Scan History</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a>
+                        <a href="{% url 'register' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus me-1"></i>Get Started
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4 flex-grow-1">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show animate__animated animate__fadeIn mb-4">
+                    <i class="bi 
+                    {% if message.tags == 'success' %}bi-check-circle-fill text-success
+                    {% elif message.tags == 'error' %}bi-exclamation-triangle-fill text-danger
+                    {% else %}bi-info-circle-fill text-primary{% endif %} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="d-flex align-items-center mb-3">
+                        <i class="bi bi-shield-shaded text-accent me-2"></i>
+                        <span>CyberShield Pro</span>
+                    </h5>
+                    <p class="mb-4">Advanced cybersecurity solutions designed to protect your digital assets against modern threats with cutting-edge technology.</p>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="bi bi-twitter social-icon"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-github social-icon"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-linkedin social-icon"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-discord social-icon"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-3">Tools</h5>
+                    <div class="footer-links">
+                        <a href="{% url 'port_scan' %}"><i class="bi bi-arrow-right-short"></i> Port Scanner</a>
+                        <a href="{% url 'password_strength' %}"><i class="bi bi-arrow-right-short"></i> Password Audit</a>
+                        <a href="{% url 'hash_generator' %}"><i class="bi bi-arrow-right-short"></i> Hash Generator</a>
+                        <a href="{% url 'url_scanner' %}"><i class="bi bi-arrow-right-short"></i> URL Scanner</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-3">Company</h5>
+                    <div class="footer-links">
+                        <a href="#"><i class="bi bi-arrow-right-short"></i> About Us</a>
+                        <a href="#"><i class="bi bi-arrow-right-short"></i> Careers</a>
+                        <a href="#"><i class="bi bi-arrow-right-short"></i> Blog</a>
+                        <a href="#"><i class="bi bi-arrow-right-short"></i> Contact</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-12">
+                    <h5 class="mb-3">Stay Updated</h5>
+                    <p class="mb-3">Subscribe to our newsletter for security tips and updates</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-envelope-arrow-up"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="footer-links">
+                        <a href="mailto:support@cybershieldpro.com"><i class="bi bi-envelope me-2"></i>support@cybershieldpro.com</a>
+                        <a href="#"><i class="bi bi-shield-lock me-2"></i>Security Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5 pt-4 border-top border-secondary">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">&copy; 2023 CyberShield Pro. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-inline">
+                        <a href="#" class="small me-3">Privacy Policy</a>
+                        <a href="#" class="small me-3">Terms of Service</a>
+                        <a href="#" class="small">GDPR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Enable tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+        
+        // Add active class to current nav item
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if(link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Terminal typing effect
+        function typeTerminalText(element, text, speed) {
+            let i = 0;
+            element.textContent = '';
+            function typing() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalPrompts = document.querySelectorAll('.terminal-prompt');
+            terminalPrompts.forEach(prompt => {
+                const text = prompt.getAttribute('data-text');
+                if (text) {
+                    typeTerminalText(prompt, text, 50);
+                }
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

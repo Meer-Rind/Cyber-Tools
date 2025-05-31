@@ -1,0 +1,63 @@
+{% extends "securitytools/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-shield-exclamation me-2"></i>Phishing & Malware Detector</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Enter a URL to check if it's a phishing site or contains malware:</p>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            {{ form.url }}
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search me-1"></i> Scan URL
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Our system checks for common phishing indicators, suspicious domains, and known malware sites.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4 shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Phishing Prevention Tips</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Always check the URL before entering sensitive information
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Look for HTTPS and a padlock icon in the address bar
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Be wary of unsolicited emails asking for personal information
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Don't click on links in suspicious emails
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Use multi-factor authentication whenever possible
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

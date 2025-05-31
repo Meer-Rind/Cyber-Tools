@@ -1,0 +1,225 @@
+{% extends 'securitytools/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg animate__animated animate__fadeIn">
+                <div class="card-header gradient-bg text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-ethernet display-5 me-3"></i>
+                        <div>
+                            <h2 class="h1 mb-0">Port Scanner</h2>
+                            <p class="mb-0 opacity-75">Comprehensive network port scanning tool</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post" id="scanForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                {{ form.target|as_crispy_field }}
+                                <div class="form-text">Enter IP address or hostname (e.g., 192.168.1.1 or example.com)</div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                {{ form.scan_type|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="row" id="customPortsRow" style="display: none;">
+                            <div class="col-12 mb-4">
+                                {{ form.ports|as_crispy_field }}
+                                <div class="form-text">Enter comma-separated ports (e.g., 80,443,8080) or ranges (e.g., 20-30)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle me-2"></i>Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="scanButton">
+                                <i class="bi bi-search me-2"></i>Scan Ports
+                            </button>
+                        </div>
+                    </form>
+                    
+                    {% if port_results %}
+                    <div class="mt-5 animate__animated animate__fadeInUp">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0 d-flex align-items-center">
+                                    <i class="bi bi-clipboard-data me-2"></i>
+                                    Scan Results for {{ target }}
+                                </h4>
+                                <span class="badge bg-primary">
+                                    {{ port_results|length }} open port{{ port_results|pluralize }} found
+                                </span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="15%">Port</th>
+                                                <th width="15%">Status</th>
+                                                <th width="30%">Service</th>
+                                                <th width="40%">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for result in port_results %}
+                                            <tr>
+                                                <td>{{ result.port }}</td>
+                                                <td><span class="badge bg-success">Open</span></td>
+                                                <td>{{ result.service }}</td>
+                                                <td class="small text-muted">
+                                                    {% if result.port == 80 or result.port == 443 %}
+                                                        Web service (HTTP{% if result.port == 443 %}S{% endif %})
+                                                    {% elif result.port == 22 %}
+                                                        Secure Shell access
+                                                    {% elif result.port == 21 %}
+                                                        File Transfer Protocol
+                                                    {% elif result.port == 25 %}
+                                                        Email transfer (SMTP)
+                                                    {% elif result.port == 3389 %}
+                                                        Remote Desktop Protocol
+                                                    {% else %}
+                                                        Network service
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4">No open ports found</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock-history me-1"></i>
+                                        Scan completed at {% now "H:i:s" %}
+                                    </small>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                                        <i class="bi bi-printer me-1"></i>Print Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-shield-check text-primary me-2"></i>
+                                Security Notes
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2 d-flex">
+                                    <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                                    <span>Only scan systems you own or have permission to scan</span>
+                                </li>
+                                <li class="mb-2 d-flex">
+                                    <i class="bi bi-exclamation-triangle-fill text-warning me-2 mt-1"></i>
+                                    <span>Open ports can be entry points for attackers</span>
+                                </li>
+                                <li class="mb-2 d-flex">
+                                    <i class="bi bi-info-circle-fill text-info me-2 mt-1"></i>
+                                    <span>Regular scanning helps identify vulnerabilities</span>
+                                </li>
+                                <li class="d-flex">
+                                    <i class="bi bi-lock-fill text-danger me-2 mt-1"></i>
+                                    <span>Close unnecessary ports to reduce attack surface</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="mb-3 d-flex align-items-center">
+                                <i class="bi bi-question-circle-fill text-primary me-2"></i>
+                                Common Ports Reference
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">20-21</span></td>
+                                            <td>FTP (File Transfer Protocol)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">22</span></td>
+                                            <td>SSH (Secure Shell)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">80</span></td>
+                                            <td>HTTP (Web Server)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">443</span></td>
+                                            <td>HTTPS (Secure Web)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">3306</span></td>
+                                            <td>MySQL Database</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-secondary">3389</span></td>
+                                            <td>RDP (Remote Desktop)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const scanType = document.getElementById('id_scan_type');
+        const customPortsRow = document.getElementById('customPortsRow');
+        const scanForm = document.getElementById('scanForm');
+        const scanButton = document.getElementById('scanButton');
+        
+        // Toggle custom ports field based on scan type
+        function togglePortsField() {
+            customPortsRow.style.display = scanType.value === 'custom' ? 'block' : 'none';
+        }
+        
+        // Form submission handler
+        scanForm.addEventListener('submit', function() {
+            scanButton.disabled = true;
+            scanButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Scanning...';
+        });
+        
+        scanType.addEventListener('change', togglePortsField);
+        togglePortsField(); // Initialize
+        
+        // Input validation for target field
+        const targetField = document.getElementById('id_target');
+        targetField.addEventListener('input', function() {
+            const isValid = this.value.trim() !== '';
+            scanButton.disabled = !isValid;
+        });
+    });
+</script>
+{% endblock %}

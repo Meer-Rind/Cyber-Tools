@@ -1,0 +1,108 @@
+{% extends "securitytools/base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article>
+                <header class="mb-4">
+                    <h1 class="fw-bolder mb-1 text-white">{{ blog.title }}</h1>
+                    <div class="text-neutral-200 fst-italic mb-2">
+                        Posted on {{ blog.published_date|date:"F d, Y" }}
+                        {% if blog.updated_date > blog.published_date %}
+                        (Updated on {{ blog.updated_date|date:"F d, Y" }})
+                        {% endif %}
+                    </div>
+                    {% if blog.tags.all %}
+                    <div class="mb-3">
+                        {% for tag in blog.tags.all %}
+                        <span class="badge bg-primary-700 text-accent me-1">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </header>
+                {% if blog.thumbnail %}
+                <figure class="mb-4">
+                    <img class="img-fluid rounded" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
+                </figure>
+                {% endif %}
+                <section class="mb-5 text-neutral-200">
+                    {{ blog.content|linebreaks }}
+                </section>
+                
+                <!-- Author Bio (if applicable) -->
+                {% if blog.author %}
+                <div class="card bg-primary-800 mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="avatar bg-accent text-primary-900 rounded-circle d-flex align-items-center justify-content-center" 
+                                     style="width: 50px; height: 50px; font-size: 1.25rem;">
+                                    {{ blog.author.username|first|upper }}
+                                </div>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="text-white mb-0">{{ blog.author.get_full_name|default:blog.author.username }}</h5>
+                                <p class="text-neutral-200 mb-0">{{ blog.author.profile.bio|default:"Cybersecurity Expert" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </article>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Related Articles -->
+            <div class="card mb-4 bg-primary-800">
+                <div class="card-header bg-primary-700 text-white">Related Articles</div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for related in related_blogs %}
+                        <div class="col-sm-12 mb-3">
+                            <div class="card h-100 bg-primary-800">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">{{ related.title }}</h5>
+                                    <p class="card-text text-neutral-200">{{ related.content|truncatewords:15 }}</p>
+                                    <a href="{% url 'blog_detail' related.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories/Tags -->
+            <div class="card mb-4 bg-primary-800">
+                <div class="card-header bg-primary-700 text-white">Categories</div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for tag in all_tags %}
+                        <a href="{% url 'blog_tag' tag.slug %}" class="badge bg-primary-700 text-accent text-decoration-none">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter Signup -->
+            <div class="card bg-primary-800">
+                <div class="card-header bg-primary-700 text-white">Stay Updated</div>
+                <div class="card-body">
+                    <p class="text-neutral-200">Subscribe to our cybersecurity newsletter</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-envelope-arrow-up"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-neutral-400">We'll never share your email. Unsubscribe anytime.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
